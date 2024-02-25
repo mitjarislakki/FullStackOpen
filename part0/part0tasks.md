@@ -69,6 +69,8 @@ sequenceDiagram
     participant browser
     participant server
 
+    note right of browser: The JS loaded upon initial page load overwrites the default form handling, instead<br/>appending the note to the list & redrawing the screen locally, then informing the server
+
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
     activate server
     server-->>browser: {"message":"note created"}
