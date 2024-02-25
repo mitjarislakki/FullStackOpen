@@ -4,6 +4,8 @@ import { useState } from 'react'
 
 const getRandomInt = (max) => Math.floor(Math.random() * max)
 
+const Button = ({onPress, text}) => <button onClick={onPress}>{text}</button>
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -17,13 +19,24 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
 
   const changeIndex = () => setSelected(getRandomInt(anecdotes.length))
+  const addVotes = (index) => {
+    const adder = () =>{
+      const copy = {...votes}
+      copy[index] += 1
+      setVotes(copy)
+    }
+    return adder
+  }
 
   return (
     <div>
-      <button onClick={changeIndex}>Generate anecdote</button>
       <p>{anecdotes[selected]}</p>
+      <div>has {votes[selected]} votes</div>
+      <Button onPress={addVotes(selected)} text='vote'/>
+      <Button onPress={changeIndex} text='next anecdote'/>
     </div>
   )
 }
