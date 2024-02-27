@@ -24,8 +24,6 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
-
-
   
   const addName = (event) => {
     event.preventDefault()
@@ -41,29 +39,46 @@ const App = () => {
       }
   }
 
+  const formSubmit = addName
+  const formContent = [
+      {
+        name: 'name',
+        fieldVal: newName,
+        stateChange: handleNameChange
+      },
+      { 
+        name: 'number',
+        fieldVal: newNumber,
+        stateChange: handleNumberChange
+      }
+    ]
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with<input value={newFilter} onChange={handleFilterChange}></input></div>
-      <h2>add a new</h2>
-      <form>
-        <div>
-          name: <input 
-            value={newName}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          number: <input 
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div><button type="submit" onClick={addName}>add</button></div>
-      </form>
-      <h2>Numbers</h2>
-      {filteredPersons.map(person => <div key={person.name}>{person.name} {person.number}</div> )}
+      <Filter filterVal={newFilter} onSubmit={handleFilterChange} />
+      <h3>add a new</h3>
+      <PersonForm content={formContent} onSubmit={formSubmit} />
+      <h3>Numbers</h3>
+      <Persons people={filteredPersons} />
     </div>
+  )
+}
+
+const Persons = ({people}) => {
+  return (people.map(person => <div key={person.name}>{person.name} {person.number}</div> ))
+}
+
+const Filter = ({filterVal, onSubmit}) => {
+  return (<div>filter shown with <input value={filterVal} onChange={onSubmit}></input></div>)
+}
+
+const PersonForm = ({onSubmit, content}) => {
+  return (
+    <form>
+      {content.map(form => <div key={form.name}>{form.name}: <input value={form.fieldVal} onChange={form.stateChange}/></div>)}
+    <div><button type="submit" onClick={onSubmit}>add</button></div>
+  </form>
   )
 }
 
